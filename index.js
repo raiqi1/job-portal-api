@@ -8,17 +8,12 @@ import companyRoute from "./routes/company.route.js";
 import jobRoute from "./routes/job.route.js";
 import applicationRoute from "./routes/application.route.js";
 
-dotenv.config({});
+dotenv.config();
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Welcome to Job Portal API");
-});
-
 // middleware
-app.use(express.json());
-app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -26,7 +21,12 @@ app.use(
   })
 );
 
-const PORT = process.env.PORT || 3000;
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
 
 // api's
 app.use("/api/v1/user", userRoute);
@@ -34,7 +34,18 @@ app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
 
-app.listen(PORT, async () => {
-  await connectDB();
-  console.log(`Server running at port ${PORT}`);
-});
+
+
+const server = async () => {
+    try {
+      await connectDB();
+      app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+      });
+    } catch (error) {
+      console.log("Failed to strt server.....", error.message);
+      process.exit(1);
+    }
+  };
+  
+  server();
