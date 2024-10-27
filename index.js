@@ -18,7 +18,6 @@ app.get("/", (req, res) => {
 
 // middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
@@ -35,7 +34,7 @@ app.use("/api/v1/company", companyRoute);
 app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
 
-app.listen(PORT, () => {
-  connectDB();
+app.listen(PORT, async () => {
+  await connectDB();
   console.log(`Server running at port ${PORT}`);
 });
