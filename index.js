@@ -20,12 +20,12 @@ app.get("/", (req, res) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-const corsOptions = {
-  origin: "http://localhost:5173",
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: "http://localhost:5173, https://job-portal-nine.vercel.app",
+    credentials: true,
+  })
+);
 
 const PORT = process.env.PORT || 3000;
 
